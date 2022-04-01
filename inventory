@@ -1,0 +1,15 @@
+[fedora_workstations]
+hxlenet-val-pc
+hxlenet-val-thinkpad
+
+[freebsd_servers]
+hxlenet-remote-backend
+hxlenet-sonarr-backend
+hxlenet-plex-backend
+
+[epel_servers]
+hxlenet-wireless-controller
+hxlenet-monitoring-backend
+
+[debian_servers]
+hxlenet-hypervisor
