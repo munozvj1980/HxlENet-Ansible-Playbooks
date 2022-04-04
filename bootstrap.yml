@@ -1,0 +1,32 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Create Group scriptingadmin
+    tags: always
+    group:
+      name: scriptingadmin
+
+  - name: Create scriptingadmin User
+    tags: always
+    user: 
+      name: scriptingadmin
+      groups: scriptingadmin
+
+  - name: add ssh key for scriptingadmin
+    tags: always
+    authorized_key:
+      user: scriptingadmin
+      key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUDUzR6VWuDBSXrFu7F4tHc3bYDfoJjRjxHaZlnKUDCEQ24ySQbcOIHOdLFiU6QPyKomoQRpwRZH3mGOUadKusQYU0OcJcU+9kRvzhDD7feZYh2oDJLov9KhfdvgXb2DSoQ6BvRjQ1XS2fL27DWMUa1wdVGyKdKtIRI4EJnYG9K0pU5lj+Byu3oxznSxWXKRXcAAZQ3QrOIWdTIe2mnxjjXM3PuF0+lIgNlsZvnGq+Z7RiWtgp3UrMoKQ7f/jTwhJ/GHzwMsKZ827UZTg6Ah0HTmI0KP/n82TUu0AuM4NRkpEbLNG4o9ERf+kUP03k7GAu0A02Y5SGc+sOPSvNcI2P aldoushxle@HxlENet-FreeNAS.HxlENet.local"
+
+
+  - name: add sudoers file for scriptingadmin
+    tags: always
+    copy:
+      src: sudoer_scriptingadmin
+      dest: "{{ sudoers_dir }}"
+      owner: root
+      group: root
+      mode: 0440
