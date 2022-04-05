@@ -1,6 +1,6 @@
 [fedora_workstations]
-hxlenet-val-pc
-hxlenet-val-thinkpad
+#hxlenet-val-pc
+#hxlenet-val-thinkpad
 
 [freebsd_servers]
 hxlenet-remote-backend

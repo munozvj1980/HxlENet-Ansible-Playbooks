@@ -1,0 +1,279 @@
+############################
+#Ansible Playbook examples:
+############################
+#
+###Upgrade an AlmaLinux server to latest package/OS releases
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Upgrade all packages
+      dnf:
+        name: "*"
+        state: latest
+        update_cache: yes
+      when: ansible_distribution == "AlmaLinux"
+
+
+###Upgrade an Ubuntu server to latest package/OS releases
+---
+
+  - name: install updates (Ubuntu)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+    
+    
+###Install some web server packages only on Ubuntu "web_servers" as per the inventory file
+- hosts: web_servers
+  become: true
+  tasks:
+
+  - name: install apache2 and php packages for Ubuntu
+    tags: apache,apache2,ubuntu
+    apt:
+      name: 
+        - apache2
+        - libapache2-mod-php
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+    
+    
+###Copy a file over to a specified destination, set ownership and permissions
+  - name: copy default html file for site
+    tags: apache,apache2
+    copy:
+      src: default_site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
+      
+      
+###Stop/Start/Restart a service
+   - name: stop apache2
+    tags: apache,apache2,ubuntu
+    service: 
+      name: apache2
+      state: started/stopped/restarted
+      enabled: yes/no
+    when: ansible_distribution == "Ubuntu"
+    
+    
+###Change text in a file, restart service affected if change successful
+  - name: change email address for admin
+    tags: almalinux,httpd
+    lineinfile:
+      path: /etc/httpd/conf/httpd.conf
+      regexp: '^ServerAdmin'
+      line: ServerAdmin admin@hxlenet.local
+    when: ansible_distribution == "AlmaLinux"
+    register: pizza
+
+  - name: restart httpd AlmaLinux
+    tags: httpd,almalinux
+    service:
+      name: httpd
+      state: restarted
+    when: pizza.changed
+    
+    
+
+###Install a dependency, then use dependency to install a software package from online    
+- hosts: workstations
+  become: true
+  tasks:
+
+  - name: install unzip
+    package:
+       name: 
+         - unzip
+
+  - name: install terraform
+    unarchive:
+       src: https://releases.hashicorp.com/terraform/1.1.7/terraform_1.1.7_linux_amd64.zip
+       dest: /usr/local/bin
+       remote_src: yes
+       owner: root
+       group: root
+       mode: 0755
+
+ 
+ ###Create new groups for ansible users 
+  - name: create group ansible_users
+    tags: always
+    group:
+      name: ansible_users
+      
+ ###Create new user "simone" and add to group
+  - name: create simone user
+    tags: always
+    user: 
+      name: simone
+      groups: ansible_users
+
+###Assign simone the SSH key for ansible things
+  - name: add ssh key for simone
+    tags: always
+    authorized_key:
+      user: simone
+      key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUDUzR6VWuDBSXrFu7F4tHc3bYDfoJjRjxHaZlnKUDCEQ24ySQbcOIHOdLFiU6QPyKomoQRpwRZH3mGOUadKusQYU0OcJcU+9kRvzhDD7feZYh2oDJLov9KhfdvgXb2DSoQ6BvRjQ1XS2fL27DWMUa1wdVGyKdKtIRI4EJnYG9K0pU5lj+Byu3oxznSxWXKRXcAAZQ3QrOIWdTIe2mnxjjXM3PuF0+lIgNlsZvnGq+Z7RiWtgp3UrMoKQ7f/jTwhJ/GHzwMsKZ827UZTg6Ah0HTmI0KP/n82TUu0AuM4NRkpEbLNG4o9ERf+kUP03k7GAu0A02Y5SGc+sOPSvNcI2P aldoushxle@HxlENet-FreeNAS.HxlENet.local"
+
+###Add sudoers file so simone can sudo without a password to all systems
+  - name: add sudoers file for simone
+    tags: always
+    copy:
+      src: sudoer_simone
+      dest: /etc/sudoers.d/simone
+      owner: root
+      group: root
+      mode: 0440
+      
+      
+--------------------------------------------------
+#########################################
+###Changes involving roles and host_vars
+#########################################
+
+###New main playbook referencing roles
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: update repo index (AlmaLinux)
+    tags: always
+    dnf: 
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "AlmaLinux"
+
+  - name: update repo index (Ubuntu)
+    tags: always
+    apt:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
+  roles:
+    - base
+
+- hosts: workstations
+  become: true
+  roles:
+    - workstations
+
+- hosts: web_servers
+  become: true
+  roles:
+    - web_servers
+
+- hosts: db_servers
+  become: true
+  roles:
+    - db_servers
+
+- hosts: file_servers
+  become: true
+  roles:
+    - file_servers
+    
+    
+###Example of a role playbook component
+- name: install mariadb package for AlmaLinux
+  tags: mariadb,almalinux,db
+  dnf:
+    name: 
+      - mariadb
+    state: latest
+  when: ansible_distribution == "AlmaLinux"
+
+
+###Here is a role playbook component using host_vars and handlers
+- name: install apache2 and php packages
+  tags: apache,httpd,php
+  package:
+    name: 
+      - "{{ apache_package_name }}"
+      - "{{ php_package_name }}"
+    state: latest
+
+- name: start and apache
+  tags: apache,httpd
+  service: 
+    name: "{{ apache_service }}"
+    state: started
+    enabled: yes
+
+- name: change email address for admin
+  tags: almalinux,httpd
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: '^Serveradmin'
+    line: ServerAdmin admin@hxlenet.com
+  when: ansible_distribution == "AlmaLinux"
+  notify: restart_apache
+
+- name: copy default html file for site
+  tags: apache,apache2,httpd
+  copy:
+    src: default_site.html
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: 0644
+    
+###host_var file example for above
+apache_package_name: apache2
+apache_service: apache2
+php_package_name: libapache2-mod-php
+
+
+###handler example for above
+- name: restart_apache
+  service: 
+    name: "{{ apache_service }}"
+    state: restarted
+    
+    
+--------------------------------------------------
+#########################################
+###Using Templates
+#########################################
+
+####Create a template for configs (ex; sshd_config) in $ANSIBLE_HOME/roles/<role>/template
+
+
+###Reference template variables in host_vars file
+ssh_users: "aldoushxle simone"
+ssh_template_file: sshd_config_ubuntu.j2
+
+
+####Modify the tasks mail.yml task to reference the template above
+- name: generate sshd_config file from template
+  tags: ssh
+  template:
+    src: "{{ ssh_template_file }}"
+    dest: /etc/ssh/sshd_config
+    mode: 0644
+  notify: restart_sshd
+
+
+-------------------------------------------
+#########################################
+###Manual Ansible commands
+#########################################
+
+###Verify connectivity to hosts listed in the inventory
+ansible all --key-file ~/.ssh/id_rsa -i inventory -m ping
+
+###Gathering facts on systems
+ansible all --key-file ~/.ssh/id_rsa  -i inventory -m gather_facts
+
