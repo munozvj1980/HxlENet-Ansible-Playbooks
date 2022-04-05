@@ -3,7 +3,7 @@
 #hxlenet-val-thinkpad
 
 [freebsd_servers]
-hxlenet-remote-backend
+hxlenet-remote-backend:8822
 hxlenet-sonarr-backend
 hxlenet-plex-backend
 
