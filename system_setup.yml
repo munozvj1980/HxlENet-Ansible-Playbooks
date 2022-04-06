@@ -63,14 +63,24 @@
         - bash
         - net-snmp
         - screen
+        - neofetch
       state: latest
+      
+  - name: Change shell for aldoushxle to bash
+    tags: bash
+    lineinfile:
+      path: /etc/passwd
+      regexp: '^aldoushxle:*:1001:1001:Val Munoz:/home/aldoushxle:/bin/tcsh'
+      line: aldoushxle:*:1001:1001:Val Munoz:/home/aldoushxle:/usr/local/bin/bash
 
   - name: Mount /mnt/HxlENet_Files_NFS in /etc/fstab
     lineinfile:
       path: /etc/fstab
       line: # HxlENet-FreeNAS Files NFS Mount during startup
+    lineinfile:
+      path: /etc/fstab
       line: hxlenet-freenas:/mnt/hxlenet-volume/hxlenet-files       /mnt/HxlENet_Files_NFS  nfs     rw	0      0
-
+      
   - name: Copy snmpd configuration file to snmp config directory
     tags: net-snmpd
     copy:
@@ -98,9 +108,27 @@
         - net-snmp
         - nfs-utils
         - screen
+        - neofetch
       update_cache: yes
       state: latest
+
+  - name: Mount /mnt/HxlENet_Files_NFS in /etc/fstab
+    lineinfile:
+      path: /etc/fstab
+      line: # HxlENet-FreeNAS Files NFS Mount during startup
+    lineinfile:
+      path: /etc/fstab
+      line: hxlenet-freenas:/mnt/hxlenet-volume/hxlenet-files       /mnt/HxlENet_Files_NFS  nfs     rw	0      0
       
+  - name: Copy snmpd configuration file to snmp config directory
+    tags: net-snmpd
+    copy:
+      src: net-snmpd.cfg
+      dest: "{{ snmpd_config_path }}"
+      owner: root
+      group: wheel
+      mode: 0644
+            
 - hosts: debian_servers
   become: true
   tasks:
@@ -112,8 +140,26 @@
         - snmpd
         - nfs-common
         - screen
+        - neofetch
       update_cache: yes
       state: latest
+
+  - name: Mount /mnt/HxlENet_Files_NFS in /etc/fstab
+    lineinfile:
+      path: /etc/fstab
+      line: # HxlENet-FreeNAS Files NFS Mount during startup
+    lineinfile:
+      path: /etc/fstab
+      line: hxlenet-freenas:/mnt/hxlenet-volume/hxlenet-files       /mnt/HxlENet_Files_NFS  nfs     rw	0      0
+      
+  - name: Copy snmpd configuration file to snmp config directory
+    tags: net-snmpd
+    copy:
+      src: net-snmpd.cfg
+      dest: "{{ snmpd_config_path }}"
+      owner: root
+      group: wheel
+      mode: 0644
       
 - hosts: fedora_workstations
   become: true
@@ -129,5 +175,23 @@
         - nfs-utils
         - yt-dlp
         - screen
+        - neofetch
       update_cache: yes
       state: latest
+
+  - name: Mount /mnt/HxlENet_Files_NFS in /etc/fstab
+    lineinfile:
+      path: /etc/fstab
+      line: # HxlENet-FreeNAS Files NFS Mount during startup
+    lineinfile:
+      path: /etc/fstab
+      line: hxlenet-freenas:/mnt/hxlenet-volume/hxlenet-files       /mnt/HxlENet_Files_NFS  nfs     rw	0      0
+
+  - name: Copy snmpd configuration file to snmp config directory
+    tags: net-snmpd
+    copy:
+      src: net-snmpd.cfg
+      dest: "{{ snmpd_config_path }}"
+      owner: root
+      group: wheel
+      mode: 0644
