@@ -40,10 +40,10 @@
       mode: 0644
 
   - name: Create /mnt/HxlENet_Files_NFS directory
-      file:
-        path: /mnt/HxlENet_Files_NFS
-        state: directory
-        mode: "u=rwx,g=rwx,o=rwx"
+    file:
+      path: /mnt/HxlENet_Files_NFS
+      state: directory
+      mode: "u=rwx,g=rwx,o=rwx"
 
 - hosts: freebsd_servers
   become: true
@@ -63,7 +63,6 @@
         - bash
         - net-snmp
         - screen
-      update_cache: yes
       state: latest
 
   - name: Mount /mnt/HxlENet_Files_NFS in /etc/fstab
@@ -75,15 +74,22 @@
   - name: Copy snmpd configuration file to snmp config directory
     tags: net-snmpd
     copy:
-      src: net_snmpd.cfg
+      src: net-snmpd.cfg
       dest: "{{ snmpd_config_path }}"
       owner: root
-      group: root
+      group: wheel
       mode: 0644
 
 - hosts: epel_servers
   become: true
   tasks:
+
+  - name: Enable EPEL-Release Repo (EPEL)
+    yum:
+      name:
+        - epel-release
+      update_cache: yes
+      state: latest
 
   - name: Install essential software (EPEL)
     yum:
@@ -103,7 +109,7 @@
     apt:
       name: 
         - nano
-        - net-snmp
+        - snmpd
         - nfs-common
         - screen
       update_cache: yes
