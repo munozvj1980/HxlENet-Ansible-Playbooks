@@ -1,15 +1,19 @@
 [fedora_workstations]
-#hxlenet-val-pc
+hxlenet-val-pc
 #hxlenet-val-thinkpad
 
 [freebsd_servers]
 hxlenet-remote-backend:8822
 hxlenet-sonarr-backend
 hxlenet-plex-backend
+ansible-test-freebsd
 
 [epel_servers]
 hxlenet-wireless-controller
 hxlenet-monitoring-backend
 
 [debian_servers]
+#hxlenet-hypervisor
+
+[proxmox_servers]
 hxlenet-hypervisor

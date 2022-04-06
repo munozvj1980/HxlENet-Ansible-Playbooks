@@ -1,0 +1,3 @@
+sshd_template: freebsd_sshd.cfg
+bashrc_template: freebsd_bashrc.cfg
+sudoers_dir: /usr/local/etc/sudoers.d/scriptingadmin

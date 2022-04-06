@@ -1,2 +1,0 @@
-ssh_template_file: sshd_config_freebsd.j2
-sudoers_dir: /usr/local/etc/sudoers.d/scriptingadmin

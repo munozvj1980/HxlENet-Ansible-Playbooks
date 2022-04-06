@@ -1,0 +1,2 @@
+sshd_template: hxlenet-remote-backend_sshd.cfg
+bashrc_template: hxlenet-remote-backend_bashrc.cfg

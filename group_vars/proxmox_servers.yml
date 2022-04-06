@@ -1,0 +1,2 @@
+ssh_template_file: sshd_config_debian.j2
+sudoers_dir: /etc/sudoers.d/scriptingadmin

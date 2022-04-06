@@ -1,0 +1,13 @@
+- name: Update OS and software (Fedora)
+  tags: always
+  dnf: 
+    name: "*"
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == "Fedora"
+  register: system_updated
+
+- name: Reboot servers
+  become: true
+  when: system_updated.changed
+  reboot:
