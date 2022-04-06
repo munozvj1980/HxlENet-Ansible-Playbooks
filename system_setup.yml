@@ -1,0 +1,127 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+  
+  - name: Copy sshd config to ssh config dir
+    tags: sshd
+    copy:
+      src: "{{ sshd_template }}"
+      dest: /etc/ssh/sshd_config
+      owner: root
+      group: "{{ sshd_usergroup }}"
+      mode: 0644
+    register: sshd_service
+
+  - name: Restart sshd
+    tags: sshd
+    service:
+      name: sshd
+      state: restarted
+    when: sshd_service.changed
+
+  - name: Copy bashrc to aldoushxle home dir
+    tags: bashrc
+    copy:
+      src: "{{ bashrc_template }}"
+      dest: /home/aldoushxle/.bashrc
+      owner: aldoushxle
+      group: aldoushxle
+      mode: 0644
+
+  - name: Copy bash_profile to aldoushxle home dir
+    tags: bashrc
+    copy:
+      src: "{{ bashrc_template }}"
+      dest: /home/aldoushxle/.bash_profile
+      owner: aldoushxle
+      group: aldoushxle
+      mode: 0644
+
+  - name: Create /mnt/HxlENet_Files_NFS directory
+      file:
+        path: /mnt/HxlENet_Files_NFS
+        state: directory
+        mode: "u=rwx,g=rwx,o=rwx"
+
+- hosts: freebsd_servers
+  become: true
+  tasks:
+
+  - name: PKG upgrade pkg (FreeBSD)
+    tags: pkg-upgrade
+    pkgng:
+      name: pkg
+      state: latest
+    when: ansible_distribution == "FreeBSD"
+
+  - name: Install essential software (FreeBSD)
+    pkgng:
+      name: 
+        - nano
+        - bash
+        - net-snmp
+        - screen
+      update_cache: yes
+      state: latest
+
+  - name: Mount /mnt/HxlENet_Files_NFS in /etc/fstab
+    lineinfile:
+      path: /etc/fstab
+      line: # HxlENet-FreeNAS Files NFS Mount during startup
+      line: hxlenet-freenas:/mnt/hxlenet-volume/hxlenet-files       /mnt/HxlENet_Files_NFS  nfs     rw	0      0
+
+  - name: Copy snmpd configuration file to snmp config directory
+    tags: net-snmpd
+    copy:
+      src: net_snmpd.cfg
+      dest: "{{ snmpd_config_path }}"
+      owner: root
+      group: root
+      mode: 0644
+
+- hosts: epel_servers
+  become: true
+  tasks:
+
+  - name: Install essential software (EPEL)
+    yum:
+      name: 
+        - nano
+        - net-snmp
+        - nfs-utils
+        - screen
+      update_cache: yes
+      state: latest
+      
+- hosts: debian_servers
+  become: true
+  tasks:
+
+  - name: Install essential software (Debian)
+    apt:
+      name: 
+        - nano
+        - net-snmp
+        - nfs-common
+        - screen
+      update_cache: yes
+      state: latest
+      
+- hosts: fedora_workstations
+  become: true
+  tasks:
+
+  - name: Install essential software (Fedora)
+    dnf:
+      name: 
+        - nano
+        - net-snmp
+        - wget
+        - git
+        - nfs-utils
+        - yt-dlp
+        - screen
+      update_cache: yes
+      state: latest

@@ -1,2 +1,5 @@
-ssh_template_file: sshd_config_debian.j2
+sshd_template: debian_sshd.cfg
+sshd_usergroup: root
+bashrc_template: debian_bashrc.cfg
+snmpd_config_path: /etc/snmp/snmpd.conf
 sudoers_dir: /etc/sudoers.d/scriptingadmin

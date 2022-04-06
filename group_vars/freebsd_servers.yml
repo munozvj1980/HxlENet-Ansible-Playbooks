@@ -1,3 +1,5 @@
 sshd_template: freebsd_sshd.cfg
+sshd_usergroup: wheel
 bashrc_template: freebsd_bashrc.cfg
+snmpd_config_path: /usr/local/share/snmp/snmpd.conf
 sudoers_dir: /usr/local/etc/sudoers.d/scriptingadmin

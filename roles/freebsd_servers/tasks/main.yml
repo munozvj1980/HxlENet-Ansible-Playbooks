@@ -1,53 +1,8 @@
-- name: Copy sshd config to ssh config dir (FreeBSD)
-  become: yes
-  tags: sshd
-  copy:
-    src: "{{ sshd_template }}"
-    dest: /etc/ssh/sshd_config
-    owner: root
-    group: wheel
-    mode: 0644
-  register: sshd_service
-
-- name: Restart sshd (FreeBSD)
-  become: yes
-  tags: sshd
-  service:
-    name: sshd
-    state: restarted
-  when: sshd_service.changed
-
-- name: Copy bashrc to aldoushxle home dir (FreeBSD)
-  tags: bashrc
-  copy:
-    src: "{{ bashrc_template }}"
-    dest: /home/aldoushxle/.bashrc
-    owner: aldoushxle
-    group: aldoushxle
-    mode: 0644
-
-- name: Copy bash_profile to aldoushxle home dir (FreeBSD)
-  tags: bashrc
-  copy:
-    src: "{{ bashrc_template }}"
-    dest: /home/aldoushxle/.bash_profile
-    owner: aldoushxle
-    group: aldoushxle
-    mode: 0644
-
 - name: pkg upgrade pkg (FreeBSD)
   tags: pkg-upgrade
   become: yes
   pkgng:
     name: pkg
-    state: latest
-
-- name: Install nano and bash (FreeBSD)
-  become: yes
-  pkgng:
-    name: 
-      - nano
-      - bash
     state: latest
 
 - name: pkg upgrade all packages (FreeBSD)
@@ -57,7 +12,7 @@
     state: latest
   register: result_pkgs_updated
 
-- name: Patch FreeBSD if updates available
+- name: Patch FreeBSD if updates are available
   tags: freebsd-update
   block:
     - name: Fetch FreeBSD OS patches
@@ -72,7 +27,7 @@
       become: yes
       register: result_os_updated
 
-- name: Reboot FreeBSD
+- name: Reboot FreeBSD if updates installed
   become: yes
   when: (result_pkgs_updated.changed or result_os_updated.changed)
   reboot:

@@ -1,2 +1,5 @@
-ssh_template_file: sshd_config_epel.j2
+sshd_template: epel_sshd.cfg
+sshd_usergroup: root
+bashrc_template: epel_bashrc.cfg
+snmpd_config_path: /etc/snmp/snmpd.conf
 sudoers_dir: /etc/sudoers.d/scriptingadmin
