@@ -164,7 +164,7 @@
     lineinfile:
       path: /etc/NetworkManager/NetworkManager.conf
       line: dns=default
-      insertafter: [main].
+      insertafter: plugins.
     when: ansible_distribution == "Ubuntu"
 
   - name: Restart NetworkManager service
