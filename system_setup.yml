@@ -159,6 +159,14 @@
       path: /etc/resolv.conf
     when: ansible_distribution == "Ubuntu"
 
+  - name: Inserting DNS config to NetworkManager.conf 
+    tags: fixdns
+    lineinfile:
+      path: /etc/NetworkManager/NetworkManager.conf
+      line: dns=default
+      insertafter: [main].
+    when: ansible_distribution == "Ubuntu"
+
   - name: Restart NetworkManager service
     tags: fixdns
     ansible.builtin.systemd:
