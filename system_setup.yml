@@ -43,7 +43,7 @@
     file:
       path: /mnt/HxlENet_Files_NFS
       state: directory
-      mode: "u=rwx,g=rwx,o=rwx"
+      mode: "u=rwx,g=rx,o=rx"
 
   - name: Mount /mnt/HxlENet_Files_NFS in /etc/fstab
     tags: mount_nfs
@@ -143,6 +143,28 @@
       owner: root
       group: root
       mode: 0644
+
+  - name: Stop systemd-resolved service
+    tags: fixdns
+    ansible.builtin.systemd:
+      name: systemd-resolved
+      state: stopped
+      enabled: no
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Delete /etc/resolv.conf symlink
+    tags: fixdns
+    file:
+      state: absent
+      path: /etc/resolv.conf
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Restart NetworkManager service
+    tags: fixdns
+    ansible.builtin.systemd:
+      name: NetworkManager
+      state: restarted
+    when: ansible_distribution == "Ubuntu"
       
 - hosts: fedora_systems
   become: true
@@ -172,18 +194,23 @@
       mode: 0644
 
   - name: Stop systemd-resolved service
+    tags: fixdns
     ansible.builtin.systemd:
       name: systemd-resolved
       state: stopped
       enabled: no
+    when: ansible_distribution == "Fedora"
 
   - name: Delete /etc/resolv.conf symlink
+    tags: fixdns
     file:
       state: absent
       path: /etc/resolv.conf
+    when: ansible_distribution == "Fedora"
 
   - name: Restart NetworkManager service
-    tags: NetworkManager
+    tags: fixdns
     ansible.builtin.systemd:
       name: NetworkManager
       state: restarted
+    when: ansible_distribution == "Fedora"
