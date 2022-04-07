@@ -12,7 +12,7 @@
     state: latest
   register: result_pkgs_updated
 
-- name: Patch FreeBSD if updates are available
+- name: Patch OS if updates are available (FreeBSD)
   tags: freebsd-update
   block:
     - name: Fetch FreeBSD OS patches

@@ -1,4 +1,4 @@
-- name: update repo index (EPEL)
+- name: Update OS and software (EPEL)
   tags: always
   yum: 
     name: "*"
