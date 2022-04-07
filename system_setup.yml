@@ -89,6 +89,30 @@
       group: wheel
       mode: 0644
 
+  - name: Start snmpd daemon at startup (FreeBSD)
+    tags: net-snmpd
+    blockinfile:
+      path: /etc/rc.conf
+      block: |
+        # Net-SNMP service parameters
+        snmpd_enable="YES"
+        snmpd_flags="-a"
+        snmpd_conffile="/usr/local/share/snmp/snmpd.conf"
+        snmptrapd_enable="YES"
+        snmptrapd_flags="-a -p /var/run/snmptrapd.pid"
+        NET_SNMP_SYS_CONTACT="aldoushxle@gmail.com"
+        NET_SNMP_SYS_LOCATION="HxlENet - Storage Closet - Virtual Machine"
+        DEFAULT_SNMP_VERSION=2c
+        NET_SNMP_MIB_MODULES="host smux mibII/mta_sendmail ucd-snmp/diskio"
+        NET_SNMP_LOGFILE=/var/log/snmpd.log
+        NET_SNMP_PERSISTENTDIR=/var/net-snmp
+  
+  - name: Start snmpd daemon 
+    tags: net-snmpd
+    service:
+      name: snmpd
+      state: started
+
 - hosts: epel_systems
   become: true
   tasks:
@@ -119,7 +143,14 @@
       owner: root
       group: root
       mode: 0644
-            
+  
+  - name: Start and activate snmpd service
+    tags: net-snmpd
+    ansible.builtin.systemd:
+      name: snmpd
+      state: started
+      enabled: yes
+
 - hosts: debian_systems
   become: true
   tasks:
@@ -200,6 +231,13 @@
       owner: root
       group: root
       mode: 0644
+    
+  - name: Start and activate snmpd service
+    tags: net-snmpd
+    ansible.builtin.systemd:
+      name: snmpd
+      state: started
+      enabled: yes
 
   - name: Stop systemd-resolved service
     tags: fixdns
