@@ -1,24 +1,24 @@
-- hosts: fedora_workstations
+- hosts: fedora_systems
   become: true
   roles:
-    - fedora_workstations
+    - fedora_systems
 
-- hosts: freebsd_servers
+- hosts: freebsd_systems
   become: true
   roles:
-    - freebsd_servers
+    - freebsd_systems
 
-- hosts: epel_servers
+- hosts: epel_systems
   become: true
   roles:
     - epel_servers
 
-- hosts: debian_servers
+- hosts: debian_systems
   become: true
   roles:
-    - debian_servers
+    - debian_systems
 
-- hosts: proxmox_servers
+- hosts: proxmox_systems
   become: true
   roles:
-    - proxmox_servers
+    - proxmox_systems

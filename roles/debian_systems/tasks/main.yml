@@ -1,0 +1,12 @@
+- name: Update OS and software (Debian/Ubuntu)
+  tags: always
+  apt: 
+    name: "*"
+    state: latest
+    update_cache: yes
+  register: system_updated
+
+- name: Reboot servers
+  become: true
+  when: system_updated.changed
+  reboot:

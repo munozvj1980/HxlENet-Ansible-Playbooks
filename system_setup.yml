@@ -53,7 +53,7 @@
         # HxlENet-FreeNAS Files NFS Mount during startup
         hxlenet-freenas:/mnt/hxlenet-volume/hxlenet-files       /mnt/HxlENet_Files_NFS  nfs     rw	0      0
       
-- hosts: freebsd_servers
+- hosts: freebsd_systems
   become: true
   tasks:
 
@@ -89,7 +89,7 @@
       group: wheel
       mode: 0644
 
-- hosts: epel_servers
+- hosts: epel_systems
   become: true
   tasks:
 
@@ -120,7 +120,7 @@
       group: root
       mode: 0644
             
-- hosts: debian_servers
+- hosts: debian_systems
   become: true
   tasks:
 
@@ -144,7 +144,7 @@
       group: root
       mode: 0644
       
-- hosts: fedora_workstations
+- hosts: fedora_systems
   become: true
   tasks:
 
@@ -170,3 +170,26 @@
       owner: root
       group: root
       mode: 0644
+
+  - name: Stop systemd-resolved service
+    tags: systemd-resolved
+    service:
+      name: systemd-resolved
+      state: stopped
+
+  - name: Disable systemd-resolved service
+    tags: systemd-resolved
+    service:
+      name: systemd-resolved
+      state: disabled
+
+  - name: Delete /etc/resolv.conf symlink
+    file:
+      state: absent
+      path: /etc/resolv.conf
+
+  - name: Restart NetworkManager service
+    tags: NetworkManager
+    service:
+      name: NetworkManager
+      state: restarted

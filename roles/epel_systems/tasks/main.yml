@@ -1,0 +1,12 @@
+- name: update repo index (EPEL)
+  tags: always
+  yum: 
+    name: "*"
+    state: latest
+    update_cache: yes
+  register: system_updated
+
+- name: Reboot servers
+  become: true
+  when: system_updated.changed
+  reboot:

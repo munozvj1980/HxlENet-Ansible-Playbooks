@@ -4,25 +4,25 @@ ansible-test-almalinux
 ansible-test-ubuntu
 ansible-test-freebsd
 
-[fedora_workstations]
-#hxlenet-val-pc
+[fedora_systems]
+hxlenet-val-pc
 #hxlenet-val-thinkpad
 ansible-test-fedora
 
-[freebsd_servers]
+[freebsd_systems]
 hxlenet-remote-backend:8822
 hxlenet-sonarr-backend
 hxlenet-plex-backend
 ansible-test-freebsd
 
-[epel_servers]
+[epel_systems]
 hxlenet-wireless-controller
 hxlenet-monitoring-backend
 ansible-test-almalinux
 
-[debian_servers]
+[debian_systems]
 #hxlenet-hypervisor
 ansible-test-ubuntu
 
-[proxmox_servers]
+[proxmox_systems]
 hxlenet-hypervisor
