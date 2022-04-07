@@ -172,16 +172,10 @@
       mode: 0644
 
   - name: Stop systemd-resolved service
-    tags: systemd-resolved
-    service:
+    ansible.builtin.systemd:
       name: systemd-resolved
       state: stopped
-
-  - name: Disable systemd-resolved service
-    tags: systemd-resolved
-    service:
-      name: systemd-resolved
-      state: disabled
+      enabled: no
 
   - name: Delete /etc/resolv.conf symlink
     file:
@@ -190,6 +184,6 @@
 
   - name: Restart NetworkManager service
     tags: NetworkManager
-    service:
+    ansible.builtin.systemd:
       name: NetworkManager
       state: restarted
