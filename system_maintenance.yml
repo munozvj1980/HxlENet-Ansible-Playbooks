@@ -11,7 +11,7 @@
 - hosts: epel_systems
   become: true
   roles:
-    - epel_servers
+    - epel_systems
 
 - hosts: debian_systems
   become: true
