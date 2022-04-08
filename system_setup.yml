@@ -113,10 +113,6 @@
       name: snmpd
       state: started
 
-  - name: Reboot systems (FreeBSD)
-    become: true
-    reboot:
-
 - hosts: epel_systems
   become: true
   tasks:
@@ -162,10 +158,6 @@
       name: firewalld
       state: stopped
       enabled: false
-
-  - name: Reboot systems (EPEL)
-    become: true
-    reboot:
 
 - hosts: debian_systems
   become: true
@@ -237,10 +229,6 @@
       state: restarted
     when: ansible_distribution == "Ubuntu"
 
-  - name: Reboot systems (Debian/Ubuntu)
-    become: true
-    reboot:
-
 - hosts: fedora_systems
   become: true
   tasks:
@@ -302,7 +290,11 @@
       name: NetworkManager
       state: restarted
 
-  - name: Reboot systems (Fedora)
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Reboot systems (All)
     become: true
     reboot:
 
