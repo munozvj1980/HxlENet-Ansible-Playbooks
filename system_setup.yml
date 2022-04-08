@@ -40,6 +40,7 @@
       mode: 0644
 
   - name: Create /mnt/HxlENet_Files_NFS directory
+    tags: mount_nfs
     file:
       path: /mnt/HxlENet_Files_NFS
       state: directory
@@ -72,6 +73,7 @@
         - screen
         - neofetch
         - htop
+        - rsync
       state: latest
       
   - name: Change user aldoushxle's shell to bash
@@ -133,6 +135,7 @@
         - screen
         - neofetch
         - htop
+        - rsync
       update_cache: true
       state: latest
 
@@ -172,6 +175,7 @@
         - screen
         - neofetch
         - htop
+        - rsync
       update_cache: true
       state: latest
 
@@ -245,6 +249,7 @@
         - screen
         - neofetch
         - htop
+        - rsync
       update_cache: yes
       state: latest
 
