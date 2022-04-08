@@ -6,7 +6,7 @@
     update_cache: yes
   register: system_updated
 
-- name: Reboot servers
+- name: Reboot systems if updated (Debian/Ubuntu)
   become: true
   when: system_updated.changed
   reboot:

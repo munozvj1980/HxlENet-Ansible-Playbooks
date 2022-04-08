@@ -1,12 +1,12 @@
-- name: pkg upgrade pkg (FreeBSD)
+- name: Upgrade PKG package manager (FreeBSD)
   tags: pkg-upgrade
-  become: yes
+  become: true
   pkgng:
     name: pkg
     state: latest
 
-- name: pkg upgrade all packages (FreeBSD)
-  become: yes
+- name: Upgrade all installed packages (FreeBSD)
+  become: true
   pkgng:
     name: "*"
     state: latest
@@ -15,19 +15,19 @@
 - name: Patch OS if updates are available (FreeBSD)
   tags: freebsd-update
   block:
-    - name: Fetch FreeBSD OS patches
+    - name: Fetch OS patches (FreeBSD)
       shell:  freebsd-update --not-running-from-cron fetch
-      become: yes
+      become: true
       register: result_fetch_successful
       changed_when: "'No updates needed' not in result_fetch_successful.stdout"
 
-    - name: Install FreeBSD OS patches
+    - name: Install OS patches (FreeBSD)
       when: result_fetch_successful.changed
       shell:  /usr/sbin/freebsd-update install
-      become: yes
+      become: true
       register: result_os_updated
 
-- name: Reboot FreeBSD if updates installed
-  become: yes
+- name: Reboot systems if updated (FreeBSD)
+  become: true
   when: (result_pkgs_updated.changed or result_os_updated.changed)
   reboot:

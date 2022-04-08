@@ -7,7 +7,7 @@
   when: ansible_distribution == "Fedora"
   register: system_updated
 
-- name: Reboot servers
+- name: Reboot systems if updated (Fedora)
   become: true
   when: system_updated.changed
   reboot:

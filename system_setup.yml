@@ -57,7 +57,7 @@
   become: true
   tasks:
 
-  - name: PKG upgrade pkg (FreeBSD)
+  - name: Upgrade PKG package manager (FreeBSD)
     tags: pkg-upgrade
     pkgng:
       name: pkg
@@ -74,7 +74,7 @@
         - neofetch
       state: latest
       
-  - name: change user aldoushxle's shell to bash
+  - name: Change user aldoushxle's shell to bash
     become: yes
     user:
       name: aldoushxle
@@ -134,6 +134,7 @@
         - neofetch
       update_cache: yes
       state: latest
+    when: ansible_distribution == "CentOS" or "AlmaLinux"
 
   - name: Copy snmpd configuration file to snmp config directory
     tags: net-snmpd
