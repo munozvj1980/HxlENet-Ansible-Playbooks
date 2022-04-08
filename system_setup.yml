@@ -181,12 +181,20 @@
       group: root
       mode: 0644
 
+  - name: Restart and activate snmpd service
+    tags: net-snmpd
+    ansible.builtin.systemd:
+      name: snmpd
+      state: restarted
+      enabled: true
+
   - name: Stop ufw service
     tags: disablefirewall
     ansible.builtin.systemd:
       name: ufw
       state: stopped
       enabled: false
+    when: ansible_distribution == "Ubuntu"
 
   - name: Stop systemd-resolved service (Ubuntu)
     tags: fixdns

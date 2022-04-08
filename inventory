@@ -3,6 +3,7 @@ ansible-test-fedora
 ansible-test-almalinux
 ansible-test-ubuntu
 ansible-test-freebsd
+ansible-test-debian
 
 [fedora_systems]
 hxlenet-val-pc
