@@ -71,6 +71,7 @@
         - net-snmp
         - screen
         - neofetch
+        - htop
       state: latest
       
   - name: Change user aldoushxle's shell to bash
@@ -112,6 +113,10 @@
       name: snmpd
       state: started
 
+  - name: Reboot systems (FreeBSD)
+    become: true
+    reboot:
+
 - hosts: epel_systems
   become: true
   tasks:
@@ -131,6 +136,7 @@
         - nfs-utils
         - screen
         - neofetch
+        - htop
       update_cache: true
       state: latest
 
@@ -157,6 +163,10 @@
       state: stopped
       enabled: false
 
+  - name: Reboot systems (EPEL)
+    become: true
+    reboot:
+
 - hosts: debian_systems
   become: true
   tasks:
@@ -169,6 +179,7 @@
         - nfs-common
         - screen
         - neofetch
+        - htop
       update_cache: true
       state: latest
 
@@ -226,6 +237,10 @@
       state: restarted
     when: ansible_distribution == "Ubuntu"
 
+  - name: Reboot systems (Debian/Ubuntu)
+    become: true
+    reboot:
+
 - hosts: fedora_systems
   become: true
   tasks:
@@ -241,6 +256,7 @@
         - yt-dlp
         - screen
         - neofetch
+        - htop
       update_cache: yes
       state: latest
 
@@ -285,6 +301,10 @@
     ansible.builtin.systemd:
       name: NetworkManager
       state: restarted
+
+  - name: Reboot systems (Fedora)
+    become: true
+    reboot:
 
       
 
