@@ -23,6 +23,7 @@ ansible-test-almalinux
 [debian_systems]
 #hxlenet-hypervisor
 ansible-test-ubuntu
+ansible-test-debian
 
 [proxmox_systems]
-hxlenet-hypervisor
+#hxlenet-hypervisor
