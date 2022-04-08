@@ -62,7 +62,6 @@
     pkgng:
       name: pkg
       state: latest
-    when: ansible_distribution == "FreeBSD"
 
   - name: Install essential software (FreeBSD)
     pkgng:
@@ -75,7 +74,7 @@
       state: latest
       
   - name: Change user aldoushxle's shell to bash
-    become: yes
+    become: true
     user:
       name: aldoushxle
       shell: /usr/local/bin/bash
@@ -95,10 +94,10 @@
       path: /etc/rc.conf
       block: |
         # Net-SNMP service parameters
-        snmpd_enable="YES"
+        snmpd_enable="true"
         snmpd_flags="-a"
         snmpd_conffile="/usr/local/share/snmp/snmpd.conf"
-        snmptrapd_enable="YES"
+        snmptrapd_enable="true"
         snmptrapd_flags="-a -p /var/run/snmptrapd.pid"
         NET_SNMP_SYS_CONTACT="aldoushxle@gmail.com"
         NET_SNMP_SYS_LOCATION="HxlENet - Storage Closet - Virtual Machine"
@@ -107,7 +106,7 @@
         NET_SNMP_LOGFILE=/var/log/snmpd.log
         NET_SNMP_PERSISTENTDIR=/var/net-snmp
   
-  - name: Start snmpd daemon 
+  - name: Start snmpd service
     tags: net-snmpd
     service:
       name: snmpd
@@ -121,7 +120,7 @@
     yum:
       name:
         - epel-release
-      update_cache: yes
+      update_cache: true
       state: latest
 
   - name: Install essential software (EPEL)
@@ -132,9 +131,8 @@
         - nfs-utils
         - screen
         - neofetch
-      update_cache: yes
+      update_cache: true
       state: latest
-    when: ansible_distribution == "CentOS" or "AlmaLinux"
 
   - name: Copy snmpd configuration file to snmp config directory
     tags: net-snmpd
@@ -150,13 +148,20 @@
     ansible.builtin.systemd:
       name: snmpd
       state: started
-      enabled: yes
+      enabled: true
+
+  - name: Stop firewalld service
+    tags: disablefirewall
+    ansible.builtin.systemd:
+      name: firewalld
+      state: stopped
+      enabled: false
 
 - hosts: debian_systems
   become: true
   tasks:
 
-  - name: Install essential software (Debian)
+  - name: Install essential software (Debian/Ubuntu)
     apt:
       name: 
         - nano
@@ -164,7 +169,7 @@
         - nfs-common
         - screen
         - neofetch
-      update_cache: yes
+      update_cache: true
       state: latest
 
   - name: Copy snmpd configuration file to snmp config directory
@@ -176,22 +181,29 @@
       group: root
       mode: 0644
 
-  - name: Stop systemd-resolved service
+  - name: Stop ufw service
+    tags: disablefirewall
+    ansible.builtin.systemd:
+      name: ufw
+      state: stopped
+      enabled: false
+
+  - name: Stop systemd-resolved service (Ubuntu)
     tags: fixdns
     ansible.builtin.systemd:
       name: systemd-resolved
       state: stopped
-      enabled: no
+      enabled: false
     when: ansible_distribution == "Ubuntu"
 
-  - name: Delete /etc/resolv.conf symlink
+  - name: Delete /etc/resolv.conf symlink (Ubuntu)
     tags: fixdns
     file:
       state: absent
       path: /etc/resolv.conf
     when: ansible_distribution == "Ubuntu"
 
-  - name: Inserting DNS config to NetworkManager.conf 
+  - name: Inserting DNS config to NetworkManager.conf (Ubuntu)
     tags: fixdns
     lineinfile:
       path: /etc/NetworkManager/NetworkManager.conf
@@ -199,13 +211,13 @@
       insertafter: plugins.
     when: ansible_distribution == "Ubuntu"
 
-  - name: Restart NetworkManager service
+  - name: Restart NetworkManager service (Ubuntu)
     tags: fixdns
     ansible.builtin.systemd:
       name: NetworkManager
       state: restarted
     when: ansible_distribution == "Ubuntu"
-      
+
 - hosts: fedora_systems
   become: true
   tasks:
@@ -240,24 +252,32 @@
       state: started
       enabled: yes
 
+  - name: Stop firewalld service
+    tags: disablefirewall
+    ansible.builtin.systemd:
+      name: firewalld
+      state: stopped
+      enabled: false
+
   - name: Stop systemd-resolved service
     tags: fixdns
     ansible.builtin.systemd:
       name: systemd-resolved
       state: stopped
-      enabled: no
-    when: ansible_distribution == "Fedora"
+      enabled: false
 
   - name: Delete /etc/resolv.conf symlink
     tags: fixdns
     file:
       state: absent
       path: /etc/resolv.conf
-    when: ansible_distribution == "Fedora"
 
   - name: Restart NetworkManager service
     tags: fixdns
     ansible.builtin.systemd:
       name: NetworkManager
       state: restarted
-    when: ansible_distribution == "Fedora"
+
+      
+
+

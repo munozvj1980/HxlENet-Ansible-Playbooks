@@ -10,7 +10,7 @@
   pkgng:
     name: "*"
     state: latest
-  register: result_pkgs_updated
+  register: pkgs_updated
 
 - name: Patch OS if updates are available (FreeBSD)
   tags: freebsd-update
@@ -18,16 +18,16 @@
     - name: Fetch OS patches (FreeBSD)
       shell:  freebsd-update --not-running-from-cron fetch
       become: true
-      register: result_fetch_successful
-      changed_when: "'No updates needed' not in result_fetch_successful.stdout"
+      register: fetch_successful
+      changed_when: "'No updates needed' not in fetch_successful.stdout"
 
     - name: Install OS patches (FreeBSD)
-      when: result_fetch_successful.changed
+      when: fetch_successful.changed
       shell:  /usr/sbin/freebsd-update install
       become: true
-      register: result_os_updated
+      register: os_updated
 
 - name: Reboot systems if updated (FreeBSD)
   become: true
-  when: (result_pkgs_updated.changed or result_os_updated.changed)
+  when: (pkgs_updated.changed or os_updated.changed)
   reboot:
