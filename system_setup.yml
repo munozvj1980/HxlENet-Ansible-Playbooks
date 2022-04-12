@@ -2,6 +2,7 @@
 
 - hosts: all
   become: true
+  gather_facts: false
   tasks:
   
   - name: Copy sshd config to ssh config dir
@@ -56,6 +57,7 @@
       
 - hosts: freebsd_systems
   become: true
+  gather_facts: false
   tasks:
 
   - name: Upgrade PKG package manager (FreeBSD)
@@ -115,18 +117,19 @@
       name: snmpd
       state: started
 
-- hosts: epel_systems
+- hosts: el_systems
   become: true
+  gather_facts: false
   tasks:
 
-  - name: Enable EPEL-Release Repo (EPEL)
+  - name: Enable EPEL-Release Repo (Enterprise Linux)
     yum:
       name:
         - epel-release
       update_cache: true
       state: latest
 
-  - name: Install essential software (EPEL)
+  - name: Install essential software (Enterprise Linux)
     yum:
       name: 
         - nano
@@ -164,6 +167,7 @@
 
 - hosts: debian_systems
   become: true
+  gather_facts: false
   tasks:
 
   - name: Install essential software (Debian/Ubuntu)
@@ -235,6 +239,7 @@
 
 - hosts: fedora_systems
   become: true
+  gather_facts: false
   tasks:
 
   - name: Install essential software (Fedora)
@@ -297,12 +302,12 @@
 
 - hosts: all
   become: true
+  gather_facts: false
   tasks:
 
   - name: Reboot systems (All)
     become: true
     reboot:
-
       
 
 

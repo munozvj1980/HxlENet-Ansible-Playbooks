@@ -1,5 +1,6 @@
 - hosts: fedora_systems
   become: true
+  gather_facts: false
   roles:
     - fedora_systems
 
@@ -8,10 +9,10 @@
   roles:
     - freebsd_systems
 
-- hosts: epel_systems
+- hosts: el_systems
   become: true
   roles:
-    - epel_systems
+    - el_systems
 
 - hosts: debian_systems
   become: true

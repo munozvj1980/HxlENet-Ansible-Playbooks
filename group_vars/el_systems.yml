@@ -1,5 +1,5 @@
-sshd_template: epel_sshd.cfg
+sshd_template: el_sshd.cfg
 sshd_usergroup: root
-bashrc_template: epel_bashrc.cfg
+bashrc_template: el_bashrc.cfg
 snmpd_config_path: /etc/snmp/snmpd.conf
 sudoers_dir: /etc/sudoers.d/scriptingadmin
