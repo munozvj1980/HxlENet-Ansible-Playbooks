@@ -16,7 +16,7 @@ hxlenet-sonarr-backend
 hxlenet-plex-backend
 ansible-test-freebsd
 
-[epel_systems]
+[el_systems]
 hxlenet-wireless-controller
 hxlenet-monitoring-backend
 ansible-test-almalinux

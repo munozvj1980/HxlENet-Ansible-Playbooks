@@ -3,6 +3,7 @@
         "https://raw.githubusercontent.com/ansible-community/schemas/main/f/ansible-playbook.json": [
             "file:///home/aldoushxle/Github/HxlENet-Ansible-Playbooks/system_setup.yml",
             "file:///home/aldoushxle/Github/HxlENet-Ansible-Playbooks/system_maintenance.yml"
-        ]
+        ],
+        "https://raw.githubusercontent.com/ansible-community/schemas/main/f/ansible.json#/definitions/playbook": "file:///home/aldoushxle/Github/HxlENet-Ansible-Playbooks/bootstrap.yml"
     }
 }
