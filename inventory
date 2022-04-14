@@ -25,6 +25,12 @@ ansible-test-almalinux
 #hxlenet-hypervisor
 ansible-test-ubuntu
 ansible-test-debian
+hxlenet-theater-pc
+hxlenet-den-pc
 
 [proxmox_systems]
 #hxlenet-hypervisor
+
+[retropie_systems]
+hxlenet-theater-pc
+hxlenet-den-pc
