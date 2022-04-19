@@ -255,6 +255,7 @@
         - neofetch
         - htop
         - rsync
+        - ansible
       update_cache: yes
       state: latest
 

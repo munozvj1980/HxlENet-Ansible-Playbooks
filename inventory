@@ -7,7 +7,7 @@ ansible-test-debian
 
 [fedora_systems]
 hxlenet-val-pc
-#hxlenet-val-thinkpad
+hxlenet-val-thinkpad
 ansible-test-fedora
 
 [freebsd_systems]
