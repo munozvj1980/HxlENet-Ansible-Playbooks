@@ -6,20 +6,24 @@
 
 - hosts: freebsd_systems
   become: true
+  gather_facts: false
   roles:
     - freebsd_systems
 
 - hosts: el_systems
   become: true
+  gather_facts: false
   roles:
     - el_systems
 
 - hosts: debian_systems
   become: true
+  gather_facts: false
   roles:
     - debian_systems
 
 - hosts: proxmox_systems
   become: true
+  gather_facts: false
   roles:
     - proxmox_systems
