@@ -2,7 +2,7 @@
 
 - hosts: all
   become: true
-  gather_facts: false
+  gather_facts: true
   tasks:
   
   - name: Copy sshd config to ssh config dir
