@@ -277,3 +277,7 @@ ansible all --key-file ~/.ssh/id_rsa -i inventory -m ping
 ###Gathering facts on systems
 ansible all --key-file ~/.ssh/id_rsa  -i inventory -m gather_facts
 
+###Run the ansible_boostrap playbook as aldoushxle
+ansible-playbook system_bootstrap.yml --ask-become-pass --limit SYSTEMNAMES -u aldoushxle --key-file ~/.ssh/id_rsa
+
+

@@ -4,6 +4,7 @@ ansible-test-almalinux
 ansible-test-ubuntu
 ansible-test-freebsd
 ansible-test-debian
+ansible-test-opensuse
 
 [fedora_systems]
 hxlenet-val-pc
@@ -20,6 +21,9 @@ ansible-test-freebsd
 hxlenet-wireless-controller
 hxlenet-monitoring-backend
 ansible-test-almalinux
+
+[suse_systems]
+ansible-test-opensuse
 
 [debian_systems]
 #hxlenet-hypervisor

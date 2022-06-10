@@ -1,0 +1,5 @@
+sshd_template: suse_sshd.cfg
+sshd_usergroup: root
+bashrc_template: suse_bashrc.cfg
+snmpd_config_path: /etc/snmp/snmpd.conf
+sudoers_dir: /etc/sudoers.d/scriptingadmin

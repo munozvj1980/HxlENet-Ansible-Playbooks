@@ -28,7 +28,6 @@
       src: "{{ bashrc_template }}"
       dest: /home/aldoushxle/.bashrc
       owner: aldoushxle
-      group: aldoushxle
       mode: 0644
 
   - name: Copy bash_profile to aldoushxle home dir
@@ -37,7 +36,6 @@
       src: "{{ bashrc_template }}"
       dest: /home/aldoushxle/.bash_profile
       owner: aldoushxle
-      group: aldoushxle
       mode: 0644
 
   - name: Create /mnt/HxlENet_Files_NFS directory
@@ -157,6 +155,47 @@
       name: snmpd
       state: started
       enabled: true
+
+- hosts: suse_systems
+  become: true
+  gather_facts: false
+  tasks:
+
+  - name: Install essential software (SUSE Linux)
+    zypper:
+      name: 
+        - nano
+        - net-snmp
+        - nfs-utils
+        - screen
+        - neofetch
+        - htop
+        - rsync
+      update_cache: true
+      state: latest
+
+  - name: Copy snmpd configuration file to snmp config directory
+    tags: net-snmpd
+    copy:
+      src: net-snmpd.cfg
+      dest: "{{ snmpd_config_path }}"
+      owner: root
+      group: root
+      mode: 0644
+  
+  - name: Start and activate snmpd service
+    tags: net-snmpd
+    ansible.builtin.systemd:
+      name: snmpd
+      state: started
+      enabled: true
+
+  - name: Stop firewalld service
+    tags: disablefirewall
+    ansible.builtin.systemd:
+      name: firewalld
+      state: stopped
+      enabled: false
 
   - name: Stop firewalld service
     tags: disablefirewall

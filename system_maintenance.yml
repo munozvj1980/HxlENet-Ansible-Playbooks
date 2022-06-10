@@ -16,6 +16,12 @@
   roles:
     - el_systems
 
+- hosts: suse_systems
+  become: true
+  gather_facts: false
+  roles:
+    - suse_systems
+
 - hosts: debian_systems
   become: true
   gather_facts: false
