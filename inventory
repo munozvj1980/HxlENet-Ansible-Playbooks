@@ -8,7 +8,7 @@ ansible-test-opensuse
 
 [fedora_systems]
 hxlenet-val-pc
-hxlenet-val-thinkpad
+hxlenet-val-devone
 ansible-test-fedora
 
 [freebsd_systems]
