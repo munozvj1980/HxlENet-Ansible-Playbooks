@@ -1,6 +1,6 @@
 [test_servers]
 ansible-test-fedora
-ansible-test-almalinux
+ansible-test-redhat
 ansible-test-ubuntu
 ansible-test-freebsd
 ansible-test-debian
@@ -8,7 +8,7 @@ ansible-test-opensuse
 
 [fedora_systems]
 hxlenet-val-pc
-hxlenet-val-devone
+#hxlenet-val-devone
 ansible-test-fedora
 
 [freebsd_systems]
@@ -20,7 +20,8 @@ ansible-test-freebsd
 [el_systems]
 hxlenet-wireless-controller
 hxlenet-monitoring-backend
-ansible-test-almalinux
+hxlenet-omada-backend
+ansible-test-redhat
 
 [suse_systems]
 ansible-test-opensuse
@@ -29,8 +30,8 @@ ansible-test-opensuse
 #hxlenet-hypervisor
 ansible-test-ubuntu
 ansible-test-debian
-hxlenet-theater-pc
-hxlenet-den-pc
+#hxlenet-theater-pc
+#hxlenet-den-pc
 
 [proxmox_systems]
 #hxlenet-hypervisor
