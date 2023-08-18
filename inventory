@@ -1,6 +1,6 @@
 [test_servers]
 ansible-test-fedora
-ansible-test-redhat
+ansible-test-almalinux
 ansible-test-ubuntu
 ansible-test-freebsd
 ansible-test-debian
@@ -18,10 +18,9 @@ hxlenet-plex-backend
 ansible-test-freebsd
 
 [el_systems]
-hxlenet-wireless-controller
 hxlenet-monitoring-backend
 hxlenet-omada-backend
-ansible-test-redhat
+ansible-test-almalinux
 
 [suse_systems]
 ansible-test-opensuse
