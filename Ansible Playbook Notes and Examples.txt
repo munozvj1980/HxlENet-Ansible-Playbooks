@@ -289,6 +289,13 @@ ansible-playbook system_maintenance.yml --limit debian_systems
 ###Git commands
 #########################################
 
+###Clone the GitHub repo using SSH and configure for commits
+mkdir ~/Github && cd ~/Github 
+git clone git@github.com:munozvj1980/HxlENet-Ansible-Playbooks.git
+cd ~/Github/HxlENet-Ansible-Playbooks
+git config --global user.name "Val Munoz"
+git config --global user.email "aldoushxle@gmail.com"
+
 ###Add any current changes to Git
 git add .
 
