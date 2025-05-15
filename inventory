@@ -4,7 +4,7 @@ ansible-test-almalinux
 ansible-test-ubuntu
 ansible-test-freebsd
 ansible-test-debian
-ansible-test-opensuse
+#ansible-test-opensuse
 
 [fedora_systems]
 #hxlenet-val-pc
@@ -15,7 +15,7 @@ ansible-test-fedora
 hxlenet-remote-backend:8822
 hxlenet-sonarr-backend
 hxlenet-plex-backend
-ansible-test-freebsd
+#ansible-test-freebsd
 
 [el_systems]
 hxlenet-monitoring-backend
@@ -23,12 +23,18 @@ hxlenet-omada-backend
 ansible-test-almalinux
 
 [suse_systems]
-ansible-test-opensuse
+#ansible-test-opensuse
 
 [debian_systems]
 #hxlenet-hypervisor
 ansible-test-ubuntu
 ansible-test-debian
+hxlenet-retropie
+hxlenet-plex-container
+hxlenet-omada-container
+hxlenet-nextcloud-container
+hxlenet-remote-container
+hxlenet-transmission-container
 #hxlenet-theater-pc
 #hxlenet-den-pc
 
